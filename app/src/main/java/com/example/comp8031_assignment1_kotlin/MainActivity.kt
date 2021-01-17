@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GestureDetectorCompat
 
 class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener{
 
@@ -17,19 +16,12 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
     var btnPrevious: Button? = null
     var btnNext:Button? = null
 
-    private lateinit var mDetector: GestureDetectorCompat
+    private var gestureScanner: GestureDetector? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        gestureScanner = GestureDetector(baseContext, this)
         setContentView(R.layout.activity_main)
-
-        // Instantiate the gesture detector with the
-        // application context and an implementation of
-        // GestureDetector.OnGestureListener
-        mDetector = GestureDetectorCompat(this, this)
-        // Set the gesture detector as the double tap
-        // listener.
-        mDetector.setOnDoubleTapListener(this)
 
         setCurrentImage()
 
@@ -61,20 +53,15 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
         setCurrentImage()
     }
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        return if (mDetector.onTouchEvent(event)) {
-            true
-        } else {
-            super.onTouchEvent(event)
-        }
+    override fun onTouchEvent(me: MotionEvent?): Boolean {
+        return gestureScanner!!.onTouchEvent(me)
     }
 
     override fun onDown(e: MotionEvent?): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun onShowPress(e: MotionEvent?) {
-        TODO("Not yet implemented")
     }
 
     override fun onSingleTapUp(e: MotionEvent?): Boolean {
@@ -82,29 +69,28 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
     }
 
     override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun onLongPress(e: MotionEvent?) {
-
     }
 
     override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
-        scrollImageToLeft();
+        scrollImageToLeft()
         return true
     }
 
     override fun onDoubleTap(e: MotionEvent?): Boolean {
-        scrollImageToRight();
+       scrollImageToRight()
         return true
     }
 
     override fun onDoubleTapEvent(e: MotionEvent?): Boolean {
-        TODO("Not yet implemented")
+       return true
     }
 
 }
